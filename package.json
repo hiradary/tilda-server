@@ -26,11 +26,6 @@
   "dependencies": {
     "express": "^4.17.1"
   },
-  // "lint-staged": {
-  //   "*.{ts}": [
-  //     "yarn lint"
-  //   ]
-  // },
   "husky": {
     "hooks": {
       "pre-commit": "yarn lint"
