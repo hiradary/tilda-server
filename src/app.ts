@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express'
 
 const app = express()
-const port = 3000
+const port = 4000
 
 const start = () => {
   app.listen(port, () => {
