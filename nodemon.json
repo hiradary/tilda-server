@@ -8,7 +8,8 @@
   "runOnChangeOnly": false,
   "watch": ["src/**/*.ts", "src/**/*.graphql", "src/**/*.gql"],
   "env": {
-    "NODE_ENV": "development"
+    "NODE_ENV": "development",
+    "NODE_PATH": "dist/"
   },
   "ext": "js,ts,json,graphql"
 }
