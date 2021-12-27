@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 
+import { addressSchema } from './address'
+
 const { Schema } = mongoose
 
 const userSchema = new Schema({
@@ -18,6 +20,10 @@ const userSchema = new Schema({
     type: String,
     minlength: 6,
     maxlength: 30,
+  },
+  addresses: {
+    type: [addressSchema],
+    default: [],
   },
 })
 

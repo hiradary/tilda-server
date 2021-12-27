@@ -8,17 +8,18 @@ const signUp = async (req: Request, res: Response) => {
     res.status(payload.statusCode).send(payload)
   } catch (err) {
     console.log(err)
-    res.end()
+    res.status(500).end()
   }
 }
 
 const signIn = async (req: Request, res: Response) => {
-  res.send('Sign in')
+  try {
+    const payload = await AuthService.signIn(req.body)
+    res.status(payload.statusCode).send(payload)
+  } catch (err) {
+    console.log(err)
+    res.status(500).end()
+  }
 }
 
-const controllers = {
-  signIn,
-  signUp,
-}
-
-export default controllers
+export { signIn, signUp }

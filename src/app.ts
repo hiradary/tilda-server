@@ -2,7 +2,6 @@ import express from 'express'
 import { json, urlencoded } from 'body-parser'
 import morgan from 'morgan'
 import cors from 'cors'
-import passport from 'passport'
 
 import apiRoute from 'api/routes'
 import config from 'config'
@@ -16,7 +15,6 @@ app.disable('x-powered-by')
 app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
-app.use(passport.initialize())
 app.use(morgan('dev'))
 
 app.use('/api', apiRoute)
