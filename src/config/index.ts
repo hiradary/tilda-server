@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 
-type NodeEnv = 'development' | 'production' | 'testing'
+export type NodeEnv = 'development' | 'production' | 'testing'
 
 interface EnvSpecificConfig {
   databaseURL: string
