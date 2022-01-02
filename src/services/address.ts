@@ -1,12 +1,15 @@
-import { ObjectId } from 'mongoose'
+import { Types } from 'mongoose'
+import { StatusCodes } from 'http-status-codes'
 
 import { UserModel } from 'models/user'
 import { httpResponse } from 'utils/http'
+import { Address } from 'models/address'
+import { ResourcesModel } from 'models/resources'
 
 interface CreateAddress {
   name: string;
   address: string;
-  network_id: ObjectId
+  network_id: Types.ObjectId
 }
 
 interface RequestingUser {
@@ -19,7 +22,11 @@ const createAddress = async (data: CreateAddress, requestingUser: RequestingUser
     const { name, address, network_id } = data
     const {email} = requestingUser
     const userAddresses = await UserModel.findOne({ email }).select('addresses').lean().exec()
-    //TODO: incomplete
+    const [{networks}] = await ResourcesModel.find().select('networks').lean().exec()
+    
+    console.log({networks, userAddresses, data})
+
+    return httpResponse(StatusCodes.OK)
   }
   catch(err) {
     throw new Error(err)

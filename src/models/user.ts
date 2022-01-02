@@ -9,6 +9,7 @@ interface User {
   name: string;
   email: string;
   password: string;
+  username?: string;
   addresses: Address[]
 }
 
@@ -31,6 +32,10 @@ const userSchema = new Schema<User>({
     type: String,
     minlength: 6,
     maxlength: 30,
+  },
+  username: {
+    unique: true,
+    type: String
   },
   addresses: {
     type: [addressSchema],

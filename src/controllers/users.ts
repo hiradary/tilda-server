@@ -1,9 +1,19 @@
 import { Request, Response } from 'express'
 
+import AddressService from 'services/address'
+
+const create = async (req: Request, res: Response) => {
+  try {
+    const payload = await AddressService.createAddress(req.body, {email: 'hirad@gmail.com', name: 'Hirad'})
+    res.status(payload.statusCode).send(payload)
+  } catch (err) {
+    console.log(err)
+    res.status(500).end()
+  }
+}
+
 const address = {
-  create: (req: Request, res: Response) => {
-    res.send('Created successfully!')
-  },
+  create
 }
 
 export { address }

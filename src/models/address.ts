@@ -1,4 +1,4 @@
-import mongoose, { Document, Model } from 'mongoose'
+import mongoose from 'mongoose'
 
 const { Schema } = mongoose
 
@@ -12,8 +12,6 @@ export interface Address {
   address: string;
   network: Network
 }
-
-export interface IAddressModel extends Address, Document {}
 
 const networkSchema = new Schema<Network>({
   name: {
@@ -37,6 +35,4 @@ const addressSchema = new Schema<Address>({
   network: networkSchema,
 })
 
-const AddressModel: Model<IAddressModel> = mongoose.model<IAddressModel>('Address', addressSchema)
-
-export { AddressModel, addressSchema, networkSchema }
+export { addressSchema, networkSchema }
