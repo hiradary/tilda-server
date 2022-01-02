@@ -1,18 +1,18 @@
-import mongoose, { Model } from 'mongoose'
+import mongoose, { Model, Document } from 'mongoose'
 import bcrypt from 'bcrypt'
 
 import { addressSchema, Address } from './address'
 
 const { Schema } = mongoose
 
-export interface User {
+interface User {
   name: string;
   email: string;
   password: string;
   addresses: Address[]
 }
 
-interface UserModel extends Model<User> {
+interface IUserModel extends User, Document {
   checkPassword(password: string): Promise<boolean | Error>
 }
 
@@ -68,10 +68,6 @@ userSchema.methods.checkPassword = function (password) {
   })
 }
 
-const UserModel = mongoose.model<User, UserModel>('User', userSchema)
-
-//TODO: wip
-
-const test = UserModel.findOne({email: 'hirad'})
+const UserModel: Model<IUserModel> = mongoose.model<IUserModel>('User', userSchema)
 
 export { UserModel }

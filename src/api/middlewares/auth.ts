@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { StatusCodes } from 'http-status-codes'
 
-import { User } from 'models/user'
+import { UserModel } from 'models/user'
 import { httpResponse } from 'utils/http'
 import { verifyToken } from 'utils/auth'
 
@@ -22,7 +22,7 @@ const withAuth = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(response.statusCode).send(response)
   }
 
-  const user = await User.findById(payload.id)
+  const user = await UserModel.findById(payload.id)
   .select('name email')
   .lean()
   .exec()
