@@ -1,7 +1,7 @@
 import { Model } from 'mongoose'
 
 import { NodeEnv } from 'config'
-import { Resources } from 'models/resources'
+import { ResourcesModel } from 'models/resources'
 import { BLOCKCHAIN_NETWORKS } from 'constants/networks'
 
 interface SeedEntityConfig {
@@ -12,7 +12,7 @@ interface SeedEntityConfig {
 const seederConfig: {[key in NodeEnv]: Array<SeedEntityConfig>} = {
   development: [
     {
-      model: Resources,
+      model: ResourcesModel,
       data: {
         networks: BLOCKCHAIN_NETWORKS
       }
@@ -20,7 +20,7 @@ const seederConfig: {[key in NodeEnv]: Array<SeedEntityConfig>} = {
   ],
   production: [
     {
-      model: Resources,
+      model: ResourcesModel,
       data: {
         networks: BLOCKCHAIN_NETWORKS
       }
@@ -28,7 +28,7 @@ const seederConfig: {[key in NodeEnv]: Array<SeedEntityConfig>} = {
   ],
   testing: [
     {
-      model: Resources,
+      model: ResourcesModel,
       data: {
         networks: BLOCKCHAIN_NETWORKS
       }
