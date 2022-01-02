@@ -1,15 +1,17 @@
 import { Model } from 'mongoose'
 
 import { NodeEnv } from 'config'
-import { ResourcesModel } from 'models/resources'
+import { ResourcesModel, IResourcesModel } from 'models/resources'
 import { BLOCKCHAIN_NETWORKS } from 'constants/networks'
 
-interface SeedEntityConfig {
-  model: Model<any>;
+interface SeedEntityConfig<T> {
+  model: T;
   data: any
 }
 
-const seederConfig: {[key in NodeEnv]: Array<SeedEntityConfig>} = {
+type ModelType = Model<IResourcesModel>
+
+const seederConfig: {[key in NodeEnv]: SeedEntityConfig<ModelType>[]} = {
   development: [
     {
       model: ResourcesModel,
@@ -36,7 +38,7 @@ const seederConfig: {[key in NodeEnv]: Array<SeedEntityConfig>} = {
   ]
 }
 
-export const seedEntity = (seedConfig: SeedEntityConfig) => {
+export const seedEntity = (seedConfig: SeedEntityConfig<ModelType>) => {
   return new Promise((resolve, reject) => {
     const { data, model } = seedConfig
     model.create(data).then(resolve).catch(reject)

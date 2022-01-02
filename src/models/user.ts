@@ -12,7 +12,7 @@ interface User {
   addresses: Address[]
 }
 
-interface IUserModel extends User, Document {
+export interface IUserModel extends User, Document {
   checkPassword(password: string): Promise<boolean | Error>
 }
 
