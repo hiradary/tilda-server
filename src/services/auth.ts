@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 
-import { User } from 'models/user'
+import { UserModel } from 'models/user'
 import { httpResponse } from 'utils/http'
 import { createToken } from 'utils/auth'
 
@@ -20,14 +20,14 @@ interface SignIn {
 const signUp = async (data: SignUp) => {
   try {
     const { email, name, password } = data
-    const existingUser = await User.findOne({ email }).exec()
+    const existingUser = await UserModel.findOne({ email }).exec()
     if (existingUser) {
       return httpResponse(StatusCodes.BAD_REQUEST, {
         message: 'User is already registered.',
       })
     }
 
-    const user = await User.create({ email, name, password })
+    const user = await UserModel.create({ email, name, password })
     const token = createToken(user)
 
     return httpResponse(StatusCodes.OK, { data: { email, name, token } })
@@ -41,7 +41,7 @@ const signIn = async (data: SignIn) => {
   const invalidMessage = 'Invalid email and passoword combination.'
 
   try {
-    const user = await User.findOne({ email })
+    const user = await UserModel.findOne({ email })
 
     if (!user) {
       return httpResponse(StatusCodes.UNAUTHORIZED, { message: invalidMessage })

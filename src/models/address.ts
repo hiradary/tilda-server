@@ -2,7 +2,18 @@ import mongoose from 'mongoose'
 
 const { Schema } = mongoose
 
-const networkSchema = new Schema({
+export interface Network {
+  name: string;
+  symbol: string
+}
+
+export interface Address {
+  name: string;
+  address: string;
+  network: Network
+}
+
+const networkSchema = new Schema<Network>({
   name: {
     type: String,
     unique: true,
@@ -15,16 +26,15 @@ const networkSchema = new Schema({
   },
 })
 
-const addressSchema = new Schema({
+const addressSchema = new Schema<Address>({
   name: {
     type: String,
-    unique: true,
     required: true,
   },
   address: String,
   network: networkSchema,
 })
 
-const Address = mongoose.model('Address', addressSchema)
+const AddressModel = mongoose.model<Address>('Address', addressSchema)
 
-export { Address, addressSchema, networkSchema }
+export { AddressModel, addressSchema, networkSchema }

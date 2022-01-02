@@ -1,13 +1,17 @@
 import mongoose from 'mongoose'
 
-import { networkSchema } from './address'
+import { networkSchema, Network } from './address'
 
 const { Schema } = mongoose
 
-const resourcesSchema = new Schema({
+export interface Resources {
+  networks: Network[]
+}
+
+const resourcesSchema = new Schema<Resources>({
   networks: [networkSchema]
 })
 
-const Resources = mongoose.model('Resources', resourcesSchema)
+const ResourcesModel = mongoose.model<Resources>('Resources', resourcesSchema)
 
-export { Resources }
+export { ResourcesModel }

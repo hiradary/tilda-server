@@ -1,9 +1,10 @@
+import { Types } from 'mongoose'
 import jwt from 'jsonwebtoken'
 
 import config from 'config'
 
-const createToken = <T extends { id: string }>(user: T) => {
-  return jwt.sign({ id: user.id }, config.jwt.secret, {
+const createToken = <T extends { _id: Types.ObjectId }>(user: T) => {
+  return jwt.sign({ id: user._id }, config.jwt.secret, {
     expiresIn: config.jwt.expiry,
   })
 }
