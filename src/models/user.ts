@@ -1,15 +1,15 @@
-import mongoose, { Model, Document } from 'mongoose'
+import mongoose, { Model, Document, Types } from 'mongoose'
 import bcrypt from 'bcrypt'
 
-import { addressSchema, Address } from './address'
+import { Address } from './address'
 
 const { Schema } = mongoose
 
 interface User {
-  name: string;
-  email: string;
-  password: string;
-  username?: string;
+  name: string
+  email: string
+  password: string
+  username?: string
   addresses: Address[]
 }
 
@@ -35,11 +35,11 @@ const userSchema = new Schema<User>({
   },
   username: {
     unique: true,
-    type: String
+    type: String,
   },
   addresses: {
-    type: [addressSchema],
-    default: [],
+    type: [Types.ObjectId],
+    ref: 'Address',
   },
 })
 
@@ -73,6 +73,9 @@ userSchema.methods.checkPassword = function (password) {
   })
 }
 
-const UserModel: Model<IUserModel> = mongoose.model<IUserModel>('User', userSchema)
+const UserModel: Model<IUserModel> = mongoose.model<IUserModel>(
+  'User',
+  userSchema,
+)
 
 export { UserModel }

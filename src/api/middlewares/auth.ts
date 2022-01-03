@@ -23,9 +23,9 @@ const withAuth = async (req: Request, res: Response, next: NextFunction) => {
   }
 
   const user = await UserModel.findById(payload.id)
-  .select('name email')
-  .lean()
-  .exec()
+    .select('name email')
+    .lean()
+    .exec()
 
   if (!user) {
     const response = httpResponse(StatusCodes.UNAUTHORIZED)

@@ -4,3 +4,12 @@ declare namespace NodeJS {
     NODE_ENV: 'development' | 'production' | 'testing'
   }
 }
+
+declare namespace Express {
+  export interface Request {
+    user?: {
+      name: string
+      email: string
+    }
+  }
+}

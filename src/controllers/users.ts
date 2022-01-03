@@ -4,7 +4,7 @@ import AddressService from 'services/address'
 
 const create = async (req: Request, res: Response) => {
   try {
-    const payload = await AddressService.createAddress(req.body, {email: 'hirad@gmail.com', name: 'Hirad'})
+    const payload = await AddressService.createAddress(req.body, req.user)
     res.status(payload.statusCode).send(payload)
   } catch (err) {
     console.log(err)
@@ -13,7 +13,7 @@ const create = async (req: Request, res: Response) => {
 }
 
 const address = {
-  create
+  create,
 }
 
 export { address }

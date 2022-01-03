@@ -1,17 +1,22 @@
-import mongoose from 'mongoose'
+import mongoose, { Types, Model } from 'mongoose'
 
 const { Schema } = mongoose
 
 export interface Network {
-  name: string;
+  _id: Types.ObjectId
+  name: string
   symbol: string
 }
 
 export interface Address {
-  name: string;
-  address: string;
+  name: string
+  address: string
   network: Network
+  createdBy: Types.ObjectId
 }
+
+export interface INetworkModel extends Network, Document {}
+export interface IAddressModel extends Address, Document {}
 
 const networkSchema = new Schema<Network>({
   name: {
@@ -33,6 +38,19 @@ const addressSchema = new Schema<Address>({
   },
   address: String,
   network: networkSchema,
+  createdBy: {
+    type: Types.ObjectId,
+    ref: 'User',
+  },
 })
 
-export { addressSchema, networkSchema }
+const NetworkModel: Model<INetworkModel> = mongoose.model<INetworkModel>(
+  'Network',
+  networkSchema,
+)
+const AddressModel: Model<IAddressModel> = mongoose.model<IAddressModel>(
+  'Address',
+  addressSchema,
+)
+
+export { addressSchema, networkSchema, NetworkModel, AddressModel }
