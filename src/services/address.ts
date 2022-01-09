@@ -94,12 +94,30 @@ const editAddress = async (
   requestingUser: RequestingUser,
 ) => {
   try {
-    const { name, address, network_id, id } = data
+    const { name, address, network_id, id: addressId } = data
     const { email } = requestingUser
     const user = await UserModel.findOne({ email })
       .select('name email addresses')
       .populate('addresses')
       .exec()
+
+    const isOwnerOfThisAddress = user.addresses.find(
+      item => item._id.toString() === addressId,
+    )
+
+    if (!isOwnerOfThisAddress) {
+      return httpResponse(StatusCodes.UNAUTHORIZED)
+    }
+
+    await AddressModel.findByIdAndUpdate(addressId, {
+      address,
+      name,
+      network: network_id,
+    })
+
+    return httpResponse(StatusCodes.OK, {
+      message: 'The address has successfully been updated.',
+    })
   } catch (err) {
     throw new Error(err)
   }

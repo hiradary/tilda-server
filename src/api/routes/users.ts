@@ -6,5 +6,6 @@ import { withAuth } from 'api/middlewares/auth'
 const router = Router()
 
 router.post('/addresses', withAuth, address.create)
+router.put('/addresses', withAuth, address.edit)
 
 export default router

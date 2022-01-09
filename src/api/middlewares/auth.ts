@@ -9,7 +9,9 @@ const withAuth = async (req: Request, res: Response, next: NextFunction) => {
   const bearer = req.headers.authorization
 
   if (!bearer || !bearer.startsWith('Bearer ')) {
-    const response = httpResponse(StatusCodes.UNAUTHORIZED)
+    const response = httpResponse(StatusCodes.UNAUTHORIZED, {
+      message: 'Cannot find a Bearer token',
+    })
     return res.status(response.statusCode).send(response)
   }
 
@@ -18,7 +20,9 @@ const withAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     payload = await verifyToken(token)
   } catch (err) {
-    const response = httpResponse(StatusCodes.UNAUTHORIZED)
+    const response = httpResponse(StatusCodes.UNAUTHORIZED, {
+      message: 'Cannot verify token.',
+    })
     return res.status(response.statusCode).send(response)
   }
 
@@ -28,7 +32,9 @@ const withAuth = async (req: Request, res: Response, next: NextFunction) => {
     .exec()
 
   if (!user) {
-    const response = httpResponse(StatusCodes.UNAUTHORIZED)
+    const response = httpResponse(StatusCodes.UNAUTHORIZED, {
+      message: 'Cannot find user',
+    })
     return res.status(response.statusCode).send(response)
   }
 

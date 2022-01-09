@@ -9,6 +9,7 @@ export interface Network {
 }
 
 export interface Address {
+  _id: Types.ObjectId
   name: string
   address: string
   network: Types.ObjectId
@@ -39,7 +40,7 @@ const addressSchema = new Schema<Address>({
   address: String,
   network: {
     type: Schema.Types.ObjectId,
-    ref: 'Network'
+    ref: 'Network',
   },
   createdBy: {
     type: Schema.Types.ObjectId,
