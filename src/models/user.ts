@@ -1,4 +1,4 @@
-import mongoose, { Model, Document, Types } from 'mongoose'
+import mongoose, { Model, Document, } from 'mongoose'
 import bcrypt from 'bcrypt'
 
 import { Address } from './address'
@@ -38,7 +38,7 @@ const userSchema = new Schema<User>({
     type: String,
   },
   addresses: {
-    type: [Types.ObjectId],
+    type: [{type: Schema.Types.ObjectId}],
     ref: 'Address',
   },
 })

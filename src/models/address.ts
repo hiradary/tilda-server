@@ -11,7 +11,7 @@ export interface Network {
 export interface Address {
   name: string
   address: string
-  network: Network
+  network: Types.ObjectId
   createdBy: Types.ObjectId
 }
 
@@ -37,9 +37,12 @@ const addressSchema = new Schema<Address>({
     required: true,
   },
   address: String,
-  network: networkSchema,
+  network: {
+    type: Schema.Types.ObjectId,
+    ref: 'Network'
+  },
   createdBy: {
-    type: Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'User',
   },
 })

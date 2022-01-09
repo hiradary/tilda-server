@@ -1,39 +1,33 @@
 import { Model } from 'mongoose'
 
 import { NodeEnv } from 'config'
-import { ResourcesModel, IResourcesModel } from 'models/resources'
 import { BLOCKCHAIN_NETWORKS } from 'constants/networks'
+import { NetworkModel, INetworkModel } from 'models/address'
 
 interface SeedEntityConfig<T> {
   model: T;
   data: any
 }
 
-type ModelType = Model<IResourcesModel>
+type ModelType = Model<INetworkModel>
 
 const seederConfig: {[key in NodeEnv]: SeedEntityConfig<ModelType>[]} = {
   development: [
     {
-      model: ResourcesModel,
-      data: {
-        networks: BLOCKCHAIN_NETWORKS
-      }
+      model: NetworkModel,
+      data: BLOCKCHAIN_NETWORKS
     }
   ],
   production: [
     {
-      model: ResourcesModel,
-      data: {
-        networks: BLOCKCHAIN_NETWORKS
-      }
+      model: NetworkModel,
+      data: BLOCKCHAIN_NETWORKS
     }
   ],
   testing: [
     {
-      model: ResourcesModel,
-      data: {
-        networks: BLOCKCHAIN_NETWORKS
-      }
+      model: NetworkModel,
+      data: BLOCKCHAIN_NETWORKS
     }
   ]
 }
