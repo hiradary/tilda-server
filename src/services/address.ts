@@ -2,13 +2,16 @@ import { StatusCodes } from 'http-status-codes'
 
 import { UserModel } from 'models/user'
 import { httpResponse } from 'utils/http'
-import { Address } from 'models/address'
-import { ResourcesModel } from 'models/resources'
+import { Address, AddressModel, NetworkModel } from 'models/address'
 
-interface AddressForm {
+interface CreateAddress {
   name: string
   address: string
   network_id: string
+}
+
+interface EditAddress extends CreateAddress {
+  id: string
 }
 
 interface RequestingUser {
@@ -17,7 +20,7 @@ interface RequestingUser {
 }
 
 const createAddress = async (
-  data: AddressForm,
+  data: CreateAddress,
   requestingUser: RequestingUser,
 ) => {
   try {
@@ -25,56 +28,83 @@ const createAddress = async (
     const { email } = requestingUser
     const user = await UserModel.findOne({ email })
       .select('name email addresses')
+      .populate('addresses')
       .exec()
-    const [{ networks }] = await ResourcesModel.find().select('networks').lean()
-    const network = networks.find(({ _id }) => _id.toString() === network_id)
 
-    let isDuplicate = false
+    const checkIfAddresssIsDuplicate = () => {
+      return new Promise<void>((resolve, reject) => {
+        user.addresses.forEach((item: Address) => {
+          if (item.name === name || item.address === address) {
+            if (item.network.toString() === network_id) {
+              reject('The address is already exist.')
+            }
+          }
+        })
+        resolve()
+      })
+    }
 
-    user.addresses.forEach(item => {
-      if (item.name === name || item.address === address) {
-        if (item.network._id.toString() === network_id) {
-          isDuplicate = true
+    const checkIfNetworkIsValid = () => {
+      return new Promise<void>(async (resolve, reject) => {
+        try {
+          const targetNetwork = await NetworkModel.findById(network_id)
+          if (targetNetwork) {
+            resolve()
+          } else {
+            reject('network_id is invalid.')
+          }
+        } catch (err) {
+          reject('network_id is invalid.')
         }
-      }
-    })
-
-    if (isDuplicate) {
-      return httpResponse(StatusCodes.UNAUTHORIZED, {
-        message: 'The address is already exist.',
       })
     }
 
-    if (!network) {
+    try {
+      await checkIfAddresssIsDuplicate()
+      await checkIfNetworkIsValid()
+
+      const newAddress = await AddressModel.create({
+        name,
+        address,
+        network: network_id,
+        createdBy: user.id,
+      })
+
+      await user.updateOne({
+        $push: {
+          addresses: newAddress.id,
+        },
+      })
+
+      return httpResponse(StatusCodes.CREATED, {
+        message: 'New address has successfully been created.',
+      })
+    } catch (err) {
       return httpResponse(StatusCodes.UNAUTHORIZED, {
-        message: 'Network is not valid.',
+        message: err,
       })
     }
-
-    const newAddress: Address = {
-      name,
-      address,
-      network,
-      createdBy: user._id,
-    }
-
-    await user.updateOne({
-      $push: {
-        addresses: newAddress,
-      },
-    })
-
-    return httpResponse(StatusCodes.OK, { data: newAddress })
   } catch (err) {
     throw new Error(err)
   }
 }
 
-// const editAddress = async (
-//   data: AddressForm,
-//   requestingUser: RequestingUser,
-// ) => {}
+const editAddress = async (
+  data: EditAddress,
+  requestingUser: RequestingUser,
+) => {
+  try {
+    const { name, address, network_id, id } = data
+    const { email } = requestingUser
+    const user = await UserModel.findOne({ email })
+      .select('name email addresses')
+      .populate('addresses')
+      .exec()
+  } catch (err) {
+    throw new Error(err)
+  }
+}
 
-const AddressService = { createAddress }
+const AddressService = { createAddress, editAddress }
 
 export default AddressService
