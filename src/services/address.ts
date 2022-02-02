@@ -5,7 +5,7 @@ import { httpResponse } from 'utils/http'
 import { Address, AddressModel, NetworkModel } from 'models/address'
 
 interface CreateAddress {
-  name: string
+  name?: string
   address: string
   network_id: string
 }
@@ -24,7 +24,7 @@ const createAddress = async (
   requestingUser: RequestingUser,
 ) => {
   try {
-    const { name, address, network_id } = data
+    const { name = '', address, network_id } = data
     const { email } = requestingUser
     const user = await UserModel.findOne({ email })
       .select('name email addresses')
@@ -94,7 +94,7 @@ const editAddress = async (
   requestingUser: RequestingUser,
 ) => {
   try {
-    const { name, address, network_id, id: addressId } = data
+    const { name = '', address, network_id, id: addressId } = data
     const { email } = requestingUser
     const user = await UserModel.findOne({ email })
       .select('name email addresses')
