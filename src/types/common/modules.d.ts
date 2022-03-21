@@ -7,7 +7,11 @@ declare namespace NodeJS {
 
 declare namespace Express {
   export interface User {
-      name: string
-      email: string
+    name: string
+    email: string
+  }
+
+  export interface Request {
+    user: User
   }
 }

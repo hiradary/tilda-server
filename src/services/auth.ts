@@ -27,7 +27,12 @@ const signUp = async (data: SignUp) => {
       })
     }
 
-    const user = await UserModel.create({ email, name, password })
+    const user = await UserModel.create({
+      email,
+      name,
+      password,
+      username: '',
+    })
     const token = createToken(user)
 
     return httpResponse(StatusCodes.OK, { data: { email, name, token } })
@@ -55,7 +60,16 @@ const signIn = async (data: SignIn) => {
 
     const token = createToken(user)
 
-    return httpResponse(StatusCodes.OK, { data: { token } })
+    return httpResponse(StatusCodes.OK, {
+      data: {
+        token,
+        user: {
+          email: user.email,
+          username: user.username,
+          name: user.name,
+        },
+      },
+    })
   } catch (err) {
     throw new Error(err)
   }
