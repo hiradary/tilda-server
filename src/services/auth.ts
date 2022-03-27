@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 
 import { UserModel } from 'models/user'
 import { httpResponse } from 'utils/http'
-import { createToken } from 'utils/auth'
+import { createToken, createUsername } from 'utils/auth'
 
 //TODO: do some validation on service inputs
 
@@ -13,7 +13,8 @@ interface SignUp {
 }
 
 interface SignIn {
-  email: string
+  username?: string
+  email?: string
   password: string
 }
 
@@ -31,22 +32,30 @@ const signUp = async (data: SignUp) => {
       email,
       name,
       password,
-      username: '',
+      username: createUsername(name),
     })
     const token = createToken(user)
 
-    return httpResponse(StatusCodes.OK, { data: { email, name, token } })
+    return httpResponse(StatusCodes.OK, {
+      data: { email, name, token, username: user.username },
+    })
   } catch (err) {
     throw new Error(err)
   }
 }
 
 const signIn = async (data: SignIn) => {
-  const { email, password } = data
-  const invalidMessage = 'Invalid email and passoword combination.'
+  const { email, username, password } = data
+  const invalidMessage = 'Invalid email/username and passoword combination.'
 
   try {
-    const user = await UserModel.findOne({ email })
+    if (!email && !username) {
+      return httpResponse(StatusCodes.UNAUTHORIZED, { message: invalidMessage })
+    }
+
+    const user = await UserModel.findOne({
+      [email ? 'email' : 'username']: email || username,
+    })
 
     if (!user) {
       return httpResponse(StatusCodes.UNAUTHORIZED, { message: invalidMessage })

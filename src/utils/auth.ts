@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid'
 import { Types } from 'mongoose'
 import jwt from 'jsonwebtoken'
 
@@ -18,4 +19,12 @@ const verifyToken = (token: string) => {
   })
 }
 
-export { createToken, verifyToken }
+const createUsername = (name: string) => {
+  const uniqueId = nanoid(12)
+  const trimmedName = name.split(' ').join('_')
+  const generatedUsername = `${trimmedName}_${uniqueId}`
+
+  return generatedUsername
+}
+
+export { createToken, verifyToken, createUsername }
