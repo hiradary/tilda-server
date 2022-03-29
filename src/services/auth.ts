@@ -37,7 +37,7 @@ const signUp = async (data: SignUp) => {
     const token = createToken(user)
 
     return httpResponse(StatusCodes.OK, {
-      data: { email, name, token, username: user.username },
+      data: { email, name, token, username: user.username, id: user.id },
     })
   } catch (err) {
     throw new Error(err)
@@ -73,6 +73,7 @@ const signIn = async (data: SignIn) => {
       data: {
         token,
         user: {
+          id: user.id,
           email: user.email,
           username: user.username,
           name: user.name,
