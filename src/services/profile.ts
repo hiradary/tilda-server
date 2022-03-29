@@ -3,12 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 import { UserModel } from 'models/user'
 import { httpResponse } from 'utils/http'
 
-interface RequestingUser {
-  email: string
-  name: string
-}
-
-const getUserProfile = async (username, requestingUser: RequestingUser) => {
+const getUserProfile = async (username: string) => {
   try {
     const user = await UserModel.findOne({ username })
       .select('name email username addresses')

@@ -26,7 +26,7 @@ const editAddress = async (req: Request, res: Response) => {
 const getUserProfile = async (req: Request, res: Response) => {
   try {
     const { username } = req.params
-    const payload = await ProfileService.getUserProfile(username, req.user)
+    const payload = await ProfileService.getUserProfile(username)
     res.status(payload.statusCode).send(payload)
   } catch (err) {
     console.log(err)
