@@ -5,7 +5,7 @@ import { withAuth } from 'api/middlewares/auth'
 
 const router = Router()
 
-router.get('/profile/:username', withAuth, profile.get)
+router.get('/profile/:username', profile.get)
 
 router.post('/addresses', withAuth, address.create)
 router.put('/addresses', withAuth, address.edit)
