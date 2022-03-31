@@ -33,11 +33,12 @@ const signUp = async (data: SignUp) => {
       name,
       password,
       username: createUsername(name),
+      bio: '',
     })
     const token = createToken(user)
 
     return httpResponse(StatusCodes.OK, {
-      data: { email, name, token, username: user.username, _id: user.id },
+      data: { token, ...user },
     })
   } catch (err) {
     throw new Error(err)
@@ -72,12 +73,7 @@ const signIn = async (data: SignIn) => {
     return httpResponse(StatusCodes.OK, {
       data: {
         token,
-        user: {
-          _id: user.id,
-          email: user.email,
-          username: user.username,
-          name: user.name,
-        },
+        user,
       },
     })
   } catch (err) {

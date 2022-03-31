@@ -1,4 +1,4 @@
-import mongoose, { Model, Document, } from 'mongoose'
+import mongoose, { Model, Document } from 'mongoose'
 import bcrypt from 'bcrypt'
 
 import { Address } from './address'
@@ -9,7 +9,8 @@ interface User {
   name: string
   email: string
   password: string
-  username?: string
+  username: string
+  bio?: string
   addresses: Address[]
 }
 
@@ -37,8 +38,11 @@ const userSchema = new Schema<User>({
     unique: true,
     type: String,
   },
+  bio: {
+    type: String,
+  },
   addresses: {
-    type: [{type: Schema.Types.ObjectId}],
+    type: [{ type: Schema.Types.ObjectId }],
     ref: 'Address',
   },
 })
