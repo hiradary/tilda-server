@@ -6,7 +6,7 @@ import { httpResponse } from 'utils/http'
 const getUserProfile = async (username: string) => {
   try {
     const user = await UserModel.findOne({ username })
-      .select('name email username addresses')
+      .select('fullname email username addresses')
       .populate({
         path: 'addresses',
         populate: [

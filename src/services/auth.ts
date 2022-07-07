@@ -7,7 +7,7 @@ import { createToken, createUsername } from 'utils/auth'
 //TODO: do some validation on service inputs
 
 interface SignUp {
-  name: string
+  fullname: string
   email: string
   password: string
 }
@@ -20,7 +20,7 @@ interface SignIn {
 
 const signUp = async (data: SignUp) => {
   try {
-    const { email, name, password } = data
+    const { email, fullname, password } = data
     const existingUser = await UserModel.findOne({ email }).exec()
     if (existingUser) {
       return httpResponse(StatusCodes.BAD_REQUEST, {
@@ -30,15 +30,15 @@ const signUp = async (data: SignUp) => {
 
     const user = await UserModel.create({
       email,
-      name,
+      fullname,
       password,
-      username: createUsername(name),
+      username: createUsername(fullname),
       bio: '',
     })
     const token = createToken(user)
 
     return httpResponse(StatusCodes.OK, {
-      data: { token, ...user },
+      data: { token, email, fullname, password, username: user.username },
     })
   } catch (err) {
     throw new Error(err)

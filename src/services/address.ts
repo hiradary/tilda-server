@@ -16,7 +16,7 @@ interface EditAddress extends CreateAddress {
 
 interface RequestingUser {
   email: string
-  name: string
+  fullname: string
 }
 
 const createAddress = async (
@@ -27,7 +27,7 @@ const createAddress = async (
     const { name = '', address, network_id } = data
     const { email } = requestingUser
     const user = await UserModel.findOne({ email })
-      .select('name email addresses')
+      .select('fullname email addresses')
       .populate('addresses')
       .exec()
 
@@ -97,7 +97,7 @@ const editAddress = async (
     const { name = '', address, network_id, id: addressId } = data
     const { email } = requestingUser
     const user = await UserModel.findOne({ email })
-      .select('name email addresses')
+      .select('fullname email addresses')
       .populate('addresses')
       .exec()
 

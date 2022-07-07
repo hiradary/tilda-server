@@ -6,7 +6,7 @@ import { Address } from './address'
 const { Schema } = mongoose
 
 interface User {
-  name: string
+  fullname: string
   email: string
   password: string
   username: string
@@ -19,7 +19,7 @@ export interface IUserModel extends User, Document {
 }
 
 const userSchema = new Schema<User>({
-  name: {
+  fullname: {
     required: true,
     type: String,
   },

@@ -27,7 +27,7 @@ const withAuth = async (req: Request, res: Response, next: NextFunction) => {
   }
 
   const user = await UserModel.findById(payload.id)
-    .select('name email')
+    .select('fullname email')
     .lean()
     .exec()
 
