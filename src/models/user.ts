@@ -12,6 +12,11 @@ interface User {
   username: string
   bio?: string
   addresses: Address[]
+  socials: {
+    instagram: string
+    twitter: string
+    website: string
+  }
 }
 
 export interface IUserModel extends User, Document {
@@ -40,6 +45,11 @@ const userSchema = new Schema<User>({
   },
   bio: {
     type: String,
+  },
+  socials: {
+    instagram: String,
+    twitter: String,
+    website: String,
   },
   addresses: {
     type: [{ type: Schema.Types.ObjectId }],

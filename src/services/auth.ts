@@ -34,6 +34,11 @@ const signUp = async (data: SignUp) => {
       password,
       username: createUsername(fullname),
       bio: '',
+      socials: {
+        instagram: '',
+        twitter: '',
+        website: '',
+      },
     })
     const token = createToken(user)
 
