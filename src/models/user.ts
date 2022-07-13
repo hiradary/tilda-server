@@ -5,7 +5,7 @@ import { Address } from './address'
 
 const { Schema } = mongoose
 
-interface User {
+export interface User {
   fullname: string
   email: string
   password: string

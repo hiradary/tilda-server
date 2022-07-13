@@ -10,13 +10,8 @@ interface CreateAddress {
   network_id: string
 }
 
-interface EditAddress extends CreateAddress {
+interface UpdateAddress extends CreateAddress {
   id: string
-}
-
-interface RequestingUser {
-  email: string
-  fullname: string
 }
 
 const createAddress = async (
@@ -89,8 +84,8 @@ const createAddress = async (
   }
 }
 
-const editAddress = async (
-  data: EditAddress,
+const updateAddress = async (
+  data: UpdateAddress,
   requestingUser: RequestingUser,
 ) => {
   try {
@@ -123,6 +118,6 @@ const editAddress = async (
   }
 }
 
-const AddressService = { createAddress, editAddress }
+const AddressService = { createAddress, updateAddress }
 
 export default AddressService
