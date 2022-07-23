@@ -2,12 +2,11 @@ import { StatusCodes } from 'http-status-codes'
 
 import { UserModel } from 'models/user'
 import { httpResponse } from 'utils/http'
-import { Address, AddressModel, NetworkModel } from 'models/address'
+import { Address, AddressModel } from 'models/address'
 
 interface CreateAddress {
   name?: string
   address: string
-  network_id: string
 }
 
 interface UpdateAddress extends CreateAddress {
@@ -19,7 +18,7 @@ const createAddress = async (
   requestingUser: RequestingUser,
 ) => {
   try {
-    const { name = '', address, network_id } = data
+    const { name = '', address } = data
     const { email } = requestingUser
     const user = await UserModel.findOne({ email })
       .select('fullname email addresses')
@@ -30,38 +29,19 @@ const createAddress = async (
       return new Promise<void>((resolve, reject) => {
         user.addresses.forEach((item: Address) => {
           if (item.name === name || item.address === address) {
-            if (item.network.toString() === network_id) {
-              reject('The address is already exist.')
-            }
+            reject('The address is already exist.')
           }
         })
         resolve()
       })
     }
 
-    const checkIfNetworkIsValid = () => {
-      return new Promise<void>(async (resolve, reject) => {
-        try {
-          const targetNetwork = await NetworkModel.findById(network_id)
-          if (targetNetwork) {
-            resolve()
-          } else {
-            reject('network_id is invalid.')
-          }
-        } catch (err) {
-          reject('network_id is invalid.')
-        }
-      })
-    }
-
     try {
       await checkIfAddresssIsDuplicate()
-      await checkIfNetworkIsValid()
 
       const newAddress = await AddressModel.create({
         name,
         address,
-        network: network_id,
         createdBy: user.id,
       })
 
@@ -89,7 +69,7 @@ const updateAddress = async (
   requestingUser: RequestingUser,
 ) => {
   try {
-    const { name = '', address, network_id, id: addressId } = data
+    const { name = '', address, id: addressId } = data
     const { email } = requestingUser
     const user = await UserModel.findOne({ email })
       .select('fullname email addresses')
@@ -107,7 +87,6 @@ const updateAddress = async (
     await AddressModel.findByIdAndUpdate(addressId, {
       address,
       name,
-      network: network_id,
     })
 
     return httpResponse(StatusCodes.OK, {

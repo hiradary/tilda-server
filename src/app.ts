@@ -6,7 +6,6 @@ import cors from 'cors'
 import apiRoute from 'api/routes'
 import config from 'config'
 import { connectDb } from 'utils/db'
-import { seedDb } from 'utils/seeder'
 
 const { port } = config
 const app = express()
@@ -23,7 +22,6 @@ app.use('/api', apiRoute)
 const start = async () => {
   try {
     await connectDb()
-    // await seedDb(process.env.NODE_ENV)
     app.listen(port, () => {
       console.log(`Tilda application is running on port ${port}.`)
     })
