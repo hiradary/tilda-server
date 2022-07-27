@@ -11,7 +11,7 @@ export const CRYPTOCURRENCIES: Cryptocurrency[] = [
   },
   {
     name: 'Tether (TRC-20)',
-    symbol: 'USDT (TRC-20)',
+    symbol: 'USDT',
   },
   {
     name: 'Litecoin',

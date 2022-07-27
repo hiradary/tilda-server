@@ -8,6 +8,13 @@ const getUserProfile = async (username: string) => {
   try {
     const user = await UserModel.findOne({ username })
       .select('fullname email username addresses bio socials')
+      .populate({
+        path: 'addresses',
+        populate: {
+          path: 'crypto',
+          model: 'Cryptocurrency',
+        },
+      })
       .exec()
 
     if (user) {

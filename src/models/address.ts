@@ -1,10 +1,13 @@
-import mongoose, { Types, Model } from 'mongoose'
+import mongoose, { Types, Model, PopulatedDoc } from 'mongoose'
+
+import { Cryptocurrency } from './resources'
 
 const { Schema } = mongoose
 
 export interface Address {
   _id: Types.ObjectId
   name: string
+  crypto: PopulatedDoc<Cryptocurrency>
   address: string
   createdBy: Types.ObjectId
 }
@@ -16,7 +19,14 @@ const addressSchema = new Schema<Address>({
     type: String,
     required: true,
   },
-  address: String,
+  crypto: {
+    type: Schema.Types.ObjectId,
+    ref: 'Cryptocurrency',
+  },
+  address: {
+    type: String,
+    required: true,
+  },
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: 'User',

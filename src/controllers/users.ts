@@ -14,13 +14,13 @@ const createAddress = async (req: Request, res: Response) => {
 }
 
 const updateAddress = async (req: Request, res: Response) => {
-  try {
-    const payload = await AddressService.updateAddress(req.body, req.user)
-    res.status(payload.statusCode).send(payload)
-  } catch (err) {
-    console.log(err)
-    res.status(500).end()
-  }
+  // try {
+  //   const payload = await AddressService.updateAddress(req.body, req.user)
+  //   res.status(payload.statusCode).send(payload)
+  // } catch (err) {
+  //   console.log(err)
+  //   res.status(500).end()
+  // }
 }
 
 const getUserProfile = async (req: Request, res: Response) => {
