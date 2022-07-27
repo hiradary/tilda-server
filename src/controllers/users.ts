@@ -13,6 +13,27 @@ const createAddress = async (req: Request, res: Response) => {
   }
 }
 
+const deleteAddress = async (req: Request, res: Response) => {
+  try {
+    const { address_id } = req.params
+    const payload = await AddressService.deleteAddress(address_id, req.user)
+    res.status(payload.statusCode).send(payload)
+  } catch (err) {
+    console.log(err)
+    res.status(500).end()
+  }
+}
+
+const getMyAddresses = async (req: Request, res: Response) => {
+  try {
+    const payload = await AddressService.getMyAddresses(req.user)
+    res.status(payload.statusCode).send(payload)
+  } catch (err) {
+    console.log(err)
+    res.status(500).end()
+  }
+}
+
 const updateAddress = async (req: Request, res: Response) => {
   // try {
   //   const payload = await AddressService.updateAddress(req.body, req.user)
@@ -58,6 +79,8 @@ const updateUserProfile = async (req: Request, res: Response) => {
 const address = {
   create: createAddress,
   update: updateAddress,
+  delete: deleteAddress,
+  getMyAddresses: getMyAddresses,
 }
 
 const profile = {

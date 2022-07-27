@@ -61,6 +61,12 @@ const signIn = async (data: SignIn) => {
 
     const user = await UserModel.findOne({
       [email ? 'email' : 'username']: email || username,
+    }).populate({
+      path: 'addresses',
+      populate: {
+        path: 'crypto',
+        model: 'Cryptocurrency',
+      },
     })
 
     if (!user) {

@@ -5,6 +5,7 @@ const { Schema } = mongoose
 export interface Cryptocurrency {
   name: string
   symbol: string
+  logo: string
 }
 
 export interface ICryptocurrencyModel extends Cryptocurrency, Document {}
@@ -16,6 +17,10 @@ const cryptocurrencySchema = new Schema<Cryptocurrency>({
     unique: true,
   },
   symbol: {
+    type: String,
+    required: true,
+  },
+  logo: {
     type: String,
     required: true,
   },

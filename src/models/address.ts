@@ -17,7 +17,7 @@ export interface IAddressModel extends Address, Document {}
 const addressSchema = new Schema<Address>({
   name: {
     type: String,
-    required: true,
+    required: false,
   },
   crypto: {
     type: Schema.Types.ObjectId,

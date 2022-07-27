@@ -68,6 +68,51 @@ const createAddress = async (
   }
 }
 
+const deleteAddress = async (
+  address_id: string,
+  requestingUser: RequestingUser,
+) => {
+  try {
+    const { email } = requestingUser
+
+    const addressOwner = await UserModel.findOne({ email })
+    const address = await AddressModel.findById(address_id)
+
+    console.log({ address, addressOwner })
+
+    if (address.createdBy.equals(addressOwner._id)) {
+      await address.delete()
+      return httpResponse(StatusCodes.NO_CONTENT)
+    }
+
+    return httpResponse(StatusCodes.UNAUTHORIZED, {
+      message: 'You are not authorized to perform this action',
+    })
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
+const getMyAddresses = async (requestingUser: RequestingUser) => {
+  try {
+    const { email } = requestingUser
+    const userAddresses = await UserModel.findOne({ email })
+      .select('addresses')
+      .populate({
+        path: 'addresses',
+        populate: {
+          path: 'crypto',
+          model: 'Cryptocurrency',
+        },
+      })
+      .exec()
+
+    return httpResponse(StatusCodes.OK, { data: userAddresses })
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
 const updateAddress = async (
   data: UpdateAddress,
   requestingUser: RequestingUser,
@@ -98,6 +143,11 @@ const updateAddress = async (
   // }
 }
 
-const AddressService = { createAddress, updateAddress }
+const AddressService = {
+  createAddress,
+  updateAddress,
+  getMyAddresses,
+  deleteAddress,
+}
 
 export default AddressService
