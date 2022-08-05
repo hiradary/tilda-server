@@ -42,6 +42,7 @@ const userSchema = new Schema<User>({
   username: {
     unique: true,
     type: String,
+    index: true,
   },
   bio: {
     type: String,

@@ -34,6 +34,18 @@ const updateUserProfile = async (
   newUser: Omit<User, 'password' | 'addresses'>,
 ) => {
   try {
+    // User is changing its username
+    if (reqUser.username !== newUser.username) {
+      const newUsernameAlreadyExists = await UserModel.findOne({
+        username: newUser.username,
+      })
+      if (newUsernameAlreadyExists) {
+        return httpResponse(StatusCodes.UNAUTHORIZED, {
+          message: 'This username is already taken.',
+        })
+      }
+    }
+
     const user = await UserModel.updateOne({ email: reqUser.email }, newUser)
       .lean()
       .exec()

@@ -43,7 +43,18 @@ const signUp = async (data: SignUp) => {
     const token = createToken(user)
 
     return httpResponse(StatusCodes.OK, {
-      data: { token, email, fullname, password, username: user.username },
+      data: {
+        token,
+        user: {
+          _id: user._id,
+          email,
+          fullname,
+          username: user.username,
+          bio: user.bio,
+          socials: user.socials,
+          addresses: [],
+        },
+      },
     })
   } catch (err) {
     throw new Error(err)
